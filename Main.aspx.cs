@@ -11,12 +11,14 @@ namespace Moonrocks_Sweepin
 {
     public partial class Main : System.Web.UI.Page
     {
-        private static ImageButton[] cells;
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            cells = new ImageButton[GameConfig.Height * GameConfig.Width];
-            Session["cells"] = cells;
+            if (!IsPostBack)
+            {
+                MineHandler mines = new MineHandler();
+                Session["cells"] = mines.Init();
+            }
+
 
             for (int i = 0; i < GameConfig.Height; i++) {
                 for (int j = 0; j < GameConfig.Width; j++)
@@ -24,8 +26,12 @@ namespace Moonrocks_Sweepin
                     ImageButton cell = new ImageButton
                     {
                         ImageUrl = "images/1.png",
-                        ID = $"{i} {j}"
+                        ID = $"{j} {i}"
                     };
+                    
+                    cell.Click += ClickDelegate;
+                    
+                    if (((bool?[,])Session["cells"])[j, i] == true) cell.ImageUrl = "images/rock.png";
 
                     Panel.Controls.Add(cell);
 
@@ -33,11 +39,18 @@ namespace Moonrocks_Sweepin
                 Panel.Controls.Add(new LiteralControl("<br />"));
             }
 
-            MineHandler mines = new MineHandler();
-            mines.Init();
 
         }
 
+        protected void ClickDelegate(object sender, ImageClickEventArgs args)
+        {
+            ImageButton cell = (ImageButton)sender;
+            Console.WriteLine(cell.ID); 
+            
+            Bitmap map = new Bitmap {Field = Bitmap.Bitboardize((bool?[,])Session["cells"])};
+            Console.WriteLine(Bitmap.BitPopcount(map.AdjacentMask(Bitmap.MaskOnClick(int.Parse(cell.ID.Substring(0, cell.ID.IndexOf(" "))), int.Parse(cell.ID.Substring(cell.ID.IndexOf(" ")))))));
+
+        }
 
     }
 }

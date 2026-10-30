@@ -8,11 +8,11 @@ namespace Moonrocks_Sweepin
 {
     public class MineHandler
     {
-        private const int Seed = 0;
+        private const int Seed = 6;
 
         public bool?[,] Cells;
 
-        public void Init()
+        public bool?[,] Init()
         {
             Cells = new bool?[GameConfig.Width, GameConfig.Height];
 
@@ -36,23 +36,20 @@ namespace Moonrocks_Sweepin
                 Console.WriteLine(mineLocation.x + ", " + mineLocation.y);
             }
 
-            for (int i = 0; i < Cells.GetLength(0); i++)
+            for (int y = 0; y < Cells.GetLength(1); y++)
             {
-                for (int j = 0; j < Cells.GetLength(1); j++) 
+                for (int x = 0; x < Cells.GetLength(0); x++) 
                 {
-                    Cells[i, j] = null;
+                    Cells[x, y] = null;
 
-                    if (minesLocation.Contains((i, j)))
+                    if (minesLocation.Contains((x, y)))
                     {
-                        Console.WriteLine("yes");
-                        Cells[i, j] = true;
+                        Cells[x, y] = true;
                     }
                 }
             }
             
-            Bitmap map = new Bitmap {Field = Bitmap.Bitboardize(Cells)};
-            Console.WriteLine(Bitmap.BitPopcount(map.AdjacentMask(Bitmap.MaskOnClick(5, 4))));
-            
+            return Cells;
 
         }
 

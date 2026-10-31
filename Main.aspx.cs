@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Security.Permissions;
@@ -20,7 +21,8 @@ namespace Moonrocks_Sweepin
                 Session["cells"] = mines.Init();
             }
 
-
+            Button[,] cells = new Button[GameConfig.Width, GameConfig.Height];
+            
             for (int i = 0; i < GameConfig.Height; i++) {
                 for (int j = 0; j < GameConfig.Width; j++)
                 {
@@ -28,22 +30,22 @@ namespace Moonrocks_Sweepin
                     div.Attributes["class"] = "box";
                     div.ID = $"box {i} {j}";
                     
-                    ImageButton cell = new ImageButton
+                    cells[j, i] = new Button
                     {
-                        ImageUrl = "images/1.png",
+                        //ImageUrl = "images/1.png",
                         ID = $"{j} {i}",
-                        CssClass = "cell"
+                        Height = new Unit(24)
                     };
                     
-                    cell.Click += ClickDelegate;
+                    cells[j, i].Click += ClickDelegate;
 
-                    if (((bool?[,])Session["cells"])[j, i] == true)
+                    /*if (((bool?[,])Session["cells"])[j, i] == true)
                     {
-                        cell.ImageUrl = "images/rock.png";
+                        //cell.ImageUrl = "images/rock.png";
                         cell.CssClass = "rock";
-                    }
+                    }*/
 
-                    div.Controls.Add(cell);
+                    div.Controls.Add(cells[j, i]);
                     
                     Panel.Controls.Add(div);
 
@@ -51,12 +53,14 @@ namespace Moonrocks_Sweepin
                 Panel.Controls.Add(new LiteralControl("<div class=\"fakebr\"> </div>"));
             }
 
+            Session["controls"] = cells;
+
 
         }
-
-        protected void ClickDelegate(object sender, ImageClickEventArgs args)
+        
+        private void ClickDelegate(object sender, EventArgs args)
         {
-            ImageButton cell = (ImageButton)sender;
+            Button cell = (Button)sender;
             Console.WriteLine(cell.ID); 
             
             Bitmap map = new Bitmap((bool?[,])Session["cells"]);

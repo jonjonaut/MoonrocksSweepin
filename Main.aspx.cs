@@ -47,8 +47,11 @@ namespace Moonrocks_Sweepin
             ImageButton cell = (ImageButton)sender;
             Console.WriteLine(cell.ID); 
             
-            Bitmap map = new Bitmap {Field = Bitmap.Bitboardize((bool?[,])Session["cells"])};
-            Console.WriteLine(Bitmap.BitPopcount(map.AdjacentMask(Bitmap.MaskOnClick(int.Parse(cell.ID.Substring(0, cell.ID.IndexOf(" "))), int.Parse(cell.ID.Substring(cell.ID.IndexOf(" ")))))));
+            Bitmap map = new Bitmap((bool?[,])Session["cells"]);
+            ulong mask = Bitmap.MaskOnClick(int.Parse(cell.ID.Substring(0, cell.ID.IndexOf(" "))));
+
+            ulong[] adjacent = map.AdjacentMask(mask, int.Parse(cell.ID.Substring(cell.ID.IndexOf(" "))));
+            Console.WriteLine(Bitmap.PopcountMask(adjacent));
 
         }
 

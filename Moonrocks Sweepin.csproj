@@ -76,9 +76,11 @@
     <Content Include="images\6.png" />
     <Content Include="images\7.png" />
     <Content Include="images\8.png" />
+    <Content Include="images\closed.svg" />
     <Content Include="images\rock.png" />
     <Content Include="Main.aspx" />
     <Content Include="Menu.aspx" />
+    <Content Include="stylishsheet.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

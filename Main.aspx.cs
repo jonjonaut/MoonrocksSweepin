@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace Moonrocks_Sweepin
@@ -23,20 +24,31 @@ namespace Moonrocks_Sweepin
             for (int i = 0; i < GameConfig.Height; i++) {
                 for (int j = 0; j < GameConfig.Width; j++)
                 {
+                    HtmlGenericControl div = new HtmlGenericControl("div");
+                    div.Attributes["class"] = "box";
+                    div.ID = $"box {i} {j}";
+                    
                     ImageButton cell = new ImageButton
                     {
                         ImageUrl = "images/1.png",
-                        ID = $"{j} {i}"
+                        ID = $"{j} {i}",
+                        CssClass = "cell"
                     };
                     
                     cell.Click += ClickDelegate;
-                    
-                    if (((bool?[,])Session["cells"])[j, i] == true) cell.ImageUrl = "images/rock.png";
 
-                    Panel.Controls.Add(cell);
+                    if (((bool?[,])Session["cells"])[j, i] == true)
+                    {
+                        cell.ImageUrl = "images/rock.png";
+                        cell.CssClass = "rock";
+                    }
+
+                    div.Controls.Add(cell);
+                    
+                    Panel.Controls.Add(div);
 
                 }
-                Panel.Controls.Add(new LiteralControl("<br />"));
+                Panel.Controls.Add(new LiteralControl("<div class=\"fakebr\"> </div>"));
             }
 
 

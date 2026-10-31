@@ -1,0 +1,43 @@
+.form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100vh;
+}
+
+.panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100vw;
+    margin-bottom: 10%;
+    background-color: yellow;
+}
+
+.box {
+    display: flex;
+    --size: 48px;
+    height: var(--size);
+    width: var(--size);
+    background-size: 100%;
+    background-image: url("images/closed.svg");
+    justify-content: center;
+    align-items: center;
+}
+
+.cell {
+    display: inherit;
+    justify-content: center;
+    height: calc(var(--size) * 0.8);
+    image-rendering: pixelated;
+}
+.rock {
+    display: inherit;
+    height: calc(var(--size) * 0.8);
+    image-rendering: pixelated;
+}
+
+.fakebr {
+    flex-basis: 100%;
+    height: 0;
+}

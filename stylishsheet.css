@@ -11,7 +11,6 @@
     justify-content: center;
     width: 100vw;
     margin-bottom: 10%;
-    background-color: yellow;
 }
 
 .box {
@@ -20,21 +19,34 @@
     height: var(--size);
     width: var(--size);
     background-size: 100%;
-    background-image: url("images/closed.svg");
     justify-content: center;
     align-items: center;
+    border: solid 1px black;
+    background-image: url("images/closed.svg");
+}
+
+.box .revealed {
+    background-image: url("images/revealed.svg");
 }
 
 .cell {
-    display: inherit;
+    display: flex;
     justify-content: center;
     height: calc(var(--size) * 0.8);
     image-rendering: pixelated;
 }
 .rock {
-    display: inherit;
+    display: flex;
     height: calc(var(--size) * 0.8);
     image-rendering: pixelated;
+}
+
+.button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
 }
 
 .fakebr {

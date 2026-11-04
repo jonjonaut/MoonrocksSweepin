@@ -6,7 +6,7 @@ namespace Moonrocks_Sweepin
     {
         private ulong[] Field { get; }
 
-        public Bitmap(bool?[,] cells) => Field = Bitboardize(cells);
+        public Bitmap(bool[,] cells) => Field = Bitboardize(cells);
 
         public static int PopcountMask(ulong[] mask)
         {
@@ -25,7 +25,7 @@ namespace Moonrocks_Sweepin
             return count;
         }
         
-        public ulong[] Bitboardize(bool?[,] cells)
+        public ulong[] Bitboardize(bool[,] cells)
         {
             ulong[] bitboard = new ulong[cells.GetLength(1)];
             

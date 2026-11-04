@@ -10,13 +10,13 @@ namespace Moonrocks_Sweepin
     {
         private const int Seed = 6;
 
-        public bool?[,] Cells;
+        public bool[,] Cells;
 
-        public bool?[,] Init()
+        public bool[,] Init()
         {
-            Cells = new bool?[GameConfig.Width, GameConfig.Height];
+            Cells = new bool[GameConfig.Width, GameConfig.Height];
 
-            int threshold = (int)Math.Floor((double)(GameConfig.Width * GameConfig.Height) / 2);
+            int threshold = (int)Math.Floor((double)(GameConfig.Width * GameConfig.Height) / 5);
             Random rand = new Random(Seed);
 
             List<(int x, int y)> minesLocation = new List<(int x, int y)>();
@@ -40,12 +40,13 @@ namespace Moonrocks_Sweepin
             {
                 for (int x = 0; x < Cells.GetLength(0); x++) 
                 {
-                    Cells[x, y] = null;
+                    Cells[x, y] = false;
 
                     if (minesLocation.Contains((x, y)))
                     {
                         Cells[x, y] = true;
                     }
+
                 }
             }
             

@@ -13,22 +13,23 @@ using System.Web.UI.WebControls;
 namespace Moonrocks_Sweepin
 {
     public partial class Main : System.Web.UI.Page
-    {
-        public static Bitmap map;
+    {        
+        public static bool[,] empty, revealed = new bool[GameConfig.Width, GameConfig.Height];
+        private static Bitmap map;
         
-        public static bool[,] revealed = new bool[GameConfig.Width, GameConfig.Height];
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 MineHandler mines = new MineHandler();
                 Session["cells"] = mines.Init();
+                map = new Bitmap((bool[,])Session["cells"]);
             }
-            else map = new Bitmap((bool[,])Session["cells"]);
+
 
             //Button[,] cells = new Button[GameConfig.Width, GameConfig.Height];
-            
+            int[,] cellCounts = new int[GameConfig.Width, GameConfig.Height];
+
             for (int i = 0; i < GameConfig.Height; i++) {
                 for (int j = 0; j < GameConfig.Width; j++)
                 {
@@ -44,7 +45,16 @@ namespace Moonrocks_Sweepin
                         Width = new Unit(24),
                         CssClass = "button"
                     };
-                    
+
+                    if (!IsPostBack)
+                    {
+                        ulong mask = Bitmap.MaskOnClick(j);
+
+                        ulong[] adjacent = map.AdjacentMask(mask, i);
+                        int popcount = Bitmap.PopcountMask(adjacent);
+                        cellCounts[j, i] = popcount;
+                    }
+
                     cell.Click += ClickDelegate;
                     
                     div.Controls.Add(cell);
@@ -56,7 +66,10 @@ namespace Moonrocks_Sweepin
                 Panel.Controls.Add(new LiteralControl("<div class=\"fakebr\"> </div>"));
             }
 
-            //if (!IsPostBack) Session["controls"] = cells;
+            if (!IsPostBack) {
+                Session["cellCounts"] = cellCounts;
+                map.MaskEmpty((int[,])Session["cellCounts"]);
+            }
             
         }
 
@@ -73,11 +86,8 @@ namespace Moonrocks_Sweepin
                     if (revealed[j, i])
                     {
                         div.Attributes["class"] = "box revealed";
-                        
-                        ulong mask = Bitmap.MaskOnClick(j);
 
-                        ulong[] adjacent = map.AdjacentMask(mask, i);
-                        int popcount = Bitmap.PopcountMask(adjacent);
+                        int popcount = ((int[,])Session["cellCounts"])[j, i];
 
                         System.Web.UI.WebControls.Image revealedImg = new System.Web.UI.WebControls.Image
                         {
@@ -120,8 +130,17 @@ namespace Moonrocks_Sweepin
         {
             Button cell = (Button)sender;
             string id = cell.ID;
+            int j = int.Parse(id.Substring(0, id.IndexOf(' ')));
+            int i = int.Parse(id.Substring(id.IndexOf(' ')));
             
-            revealed[int.Parse(id.Substring(0, id.IndexOf(' '))), int.Parse(id.Substring(id.IndexOf(' ')))] = true;
+            ulong[] empties = map.EmptyMask();
+
+            foreach (ulong emptylong in empties)
+            {
+                Console.WriteLine(Convert.ToString((long)emptylong, 2).PadLeft(64, '0'));
+            }
+            
+            revealed[j, i] = true;
         }
 
     }

@@ -25,7 +25,15 @@
     background-image: url("images/closed.svg");
 }
 
-.box .revealed {
+.revealed {
+    display: flex;
+    --size: 48px;
+    height: var(--size);
+    width: var(--size);
+    background-size: 100%;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px black;
     background-image: url("images/revealed.svg");
 }
 

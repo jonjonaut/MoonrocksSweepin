@@ -31,10 +31,10 @@ namespace Moonrocks_Sweepin
             } while (count < threshold);
             
             //debug
-            foreach ((int x, int y) mineLocation in minesLocation)
+            /*foreach ((int x, int y) mineLocation in minesLocation)
             {
                 Console.WriteLine(mineLocation.x + ", " + mineLocation.y);
-            }
+            }*/
 
             for (int y = 0; y < Cells.GetLength(1); y++)
             {

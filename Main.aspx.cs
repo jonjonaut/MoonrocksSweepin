@@ -125,7 +125,7 @@ namespace Moonrocks_Sweepin
             //Session["controls"] = cells;
             
         }
-
+        
         private void ClickDelegate(object sender, EventArgs args)
         {
             Button cell = (Button)sender;
@@ -133,13 +133,23 @@ namespace Moonrocks_Sweepin
             int j = int.Parse(id.Substring(0, id.IndexOf(' ')));
             int i = int.Parse(id.Substring(id.IndexOf(' ')));
             
-            //ulong[] empties = map.EmptyMask();
-
             Console.Clear();
+            
+            if (((int[,])Session["cellCounts"])[j, i] == 0)
+            {
+                ulong[] empties = map.EmptyMask(j, i);
+
+                foreach (ulong emptylong in empties)
+                {
+                    Console.WriteLine(Convert.ToString((long)emptylong, 2).PadLeft(GameConfig.Width, '0'));
+                }
+            }
+
+            /*Console.Clear();
 
             foreach (var tup in map.AdjacentCoords(Bitmap.MaskOnClick(j), i)) {
                 Console.WriteLine($"x={tup.Item1}, y={tup.Item2}");
-            }
+            }*/
             
             /*foreach (ulong emptylong in empties)
             {

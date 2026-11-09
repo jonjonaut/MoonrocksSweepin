@@ -44,17 +44,16 @@ namespace Moonrocks_Sweepin
                     }
                 }
             }
-
-            
             
             //debug
-            foreach (long i in bitboard)
+            /*foreach (long i in bitboard)
             {
                 Console.WriteLine(Convert.ToString(i, 2).PadLeft(cells.GetLength(0), '0'));
-            }
+            }*/
             
             return bitboard;
         }
+
 
         public void MaskEmpty(int[,] popcount, bool[,] bombs)
         {
@@ -76,21 +75,24 @@ namespace Moonrocks_Sweepin
         
         public static ulong MaskOnClick(int x) => 1UL << (GameConfig.Width - x - 1);
 
-        public ulong[] EmptyMask(int startR, int startC)
+        public ulong[] EmptyMask(int startC, int startR)
         {
-            ulong[] empty = new ulong[Field.GetLength(1)];
-            ulong click = MaskOnClick(startR);
+            ulong[] empty = new ulong[GameConfig.Height];
 
             Queue<(int, int)> queue = new Queue<(int, int)>();
-            queue.Enqueue((startR, startC));
-
+            queue.Enqueue((startC, startR));
+            
             while (queue.Count > 0)
             {
                 var (x, y) = queue.Dequeue();
 
                 foreach (var coords in AdjacentCoords(MaskOnClick(x), y))
                 {
-                    queue.Enqueue(coords);
+                    int nx = x + coords.Item1;
+                    int ny = y + coords.Item2;
+                    
+                    queue.Enqueue((nx, ny));
+                    empty[ny] |= MaskOnClick(nx);
                 }
             }
             

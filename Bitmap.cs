@@ -76,46 +76,56 @@ namespace Moonrocks_Sweepin
         
         public static ulong MaskOnClick(int x) => 1UL << (GameConfig.Width - x - 1);
 
-        public ulong[] EmptyMask(int x, int y)
+        public ulong[] EmptyMask(int startR, int startC)
         {
             ulong[] empty = new ulong[Field.GetLength(1)];
-            ulong click = MaskOnClick(x);
+            ulong click = MaskOnClick(startR);
 
-            Queue queue = new Queue();
+            Queue<(int, int)> queue = new Queue<(int, int)>();
+            queue.Enqueue((startR, startC));
+
+            while (queue.Count > 0)
+            {
+                var (x, y) = queue.Dequeue();
+
+                foreach (var coords in AdjacentCoords(MaskOnClick(x), y))
+                {
+                    queue.Enqueue(coords);
+                }
+            }
             
-
             return empty;
         }
         
         public List<(int, int)> AdjacentCoords(ulong mask, int y)
         {
-            List<(int, int, int)> list = new List<(int, int, int)>();
+            List<(ulong, int, int)> list = new List<(ulong, int, int)>();
 
-            ulong[] option = EmptyField;
+            EmptyField[y] &= ~mask;
             
             if (y > 0)
             {
                 list.AddRange(new[]
                 {
-                    (((mask << 1) & option[y - 1]) != 0 ? 1 : 0, -1 , y - 1),
-                    ((mask & option[y - 1]) != 0 ? 1 : 0, 0 , y - 1),
-                    (((mask >> 1) & option[y - 1]) != 0 ? 1 : 0, 1 , y - 1)
+                    ((mask << 1) & EmptyField[y - 1], -1 , -1),
+                    (mask & EmptyField[y - 1], 0, -1),
+                    ((mask >> 1) & EmptyField[y - 1], 1 , -1)
                 });
             }
 
-            if (y < option.Length - 1)
+            if (y < EmptyField.Length - 1)
             {
                 list.AddRange(new[] {
-                    (((mask << 1) & option[y + 1]) != 0 ? 1 : 0 , -1, y + 1),
-                    ((mask & option[y + 1]) != 0 ? 1 : 0 , 0 , y + 1),
-                    (((mask >> 1) & option[y + 1]) != 0 ? 1 : 0 , 1 , y + 1)
+                    ((mask << 1) & EmptyField[y + 1], -1, 1),
+                    (mask & EmptyField[y + 1], 0 , 1),
+                    ((mask >> 1) & EmptyField[y + 1], 1 , 1)
                 });
             }
             
             list.AddRange(new[]
             {
-                (((mask << 1) & option[y]) != 0 ? 1 : 0 , -1 , y),
-                (((mask >> 1) & option[y]) != 0 ? 1 : 0 , 1 , y)
+                ((mask << 1) & EmptyField[y], -1 , 0),
+                ((mask >> 1) & EmptyField[y], 1 , 0)
             });
             
             List<(int, int)> coords = new List<(int, int)>();
@@ -124,6 +134,7 @@ namespace Moonrocks_Sweepin
             {
                 if (list[i].Item1 != 0)
                 {
+                    EmptyField[y + list[i].Item3] &= ~list[i].Item1; 
                     coords.Add((list[i].Item2, list[i].Item3));
                 } 
             }

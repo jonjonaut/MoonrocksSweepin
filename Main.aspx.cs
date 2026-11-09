@@ -68,7 +68,7 @@ namespace Moonrocks_Sweepin
 
             if (!IsPostBack) {
                 Session["cellCounts"] = cellCounts;
-                map.MaskEmpty((int[,])Session["cellCounts"]);
+                map.MaskEmpty((int[,])Session["cellCounts"], (bool[,])Session["cells"]);
             }
             
         }
@@ -133,12 +133,18 @@ namespace Moonrocks_Sweepin
             int j = int.Parse(id.Substring(0, id.IndexOf(' ')));
             int i = int.Parse(id.Substring(id.IndexOf(' ')));
             
-            ulong[] empties = map.EmptyMask();
+            //ulong[] empties = map.EmptyMask();
 
-            foreach (ulong emptylong in empties)
+            Console.Clear();
+
+            foreach (var tup in map.AdjacentCoords(Bitmap.MaskOnClick(j), i)) {
+                Console.WriteLine($"x={tup.Item1}, y={tup.Item2}");
+            }
+            
+            /*foreach (ulong emptylong in empties)
             {
                 Console.WriteLine(Convert.ToString((long)emptylong, 2).PadLeft(64, '0'));
-            }
+            }*/
             
             revealed[j, i] = true;
         }

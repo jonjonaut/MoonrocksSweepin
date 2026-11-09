@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Moonrocks_Sweepin
 {
@@ -54,7 +56,7 @@ namespace Moonrocks_Sweepin
             return bitboard;
         }
 
-        public void MaskEmpty(int[,] popcount)
+        public void MaskEmpty(int[,] popcount, bool[,] bombs)
         {
             ulong[] mask = new ulong[popcount.GetLength(1)];
 
@@ -62,9 +64,9 @@ namespace Moonrocks_Sweepin
             {
                 for (int y = 0; y < popcount.GetLength(1); y++)
                 {
-                    if (popcount[x, y] == 0)
+                    if (popcount[x, y] == 0 && !bombs[x, y])
                     {
-                        mask[y] |= 1UL << (popcount.GetLength(0) - x);
+                        mask[y] |= 1UL << (popcount.GetLength(0) - x - 1);
                     }
                 }
             }
@@ -81,16 +83,59 @@ namespace Moonrocks_Sweepin
 
             Queue queue = new Queue();
             
-            empty[y] |= AdjacentMask(click, y, true);
 
             return empty;
+        }
+        
+        public List<(int, int)> AdjacentCoords(ulong mask, int y)
+        {
+            List<(int, int, int)> list = new List<(int, int, int)>();
+
+            ulong[] option = EmptyField;
+            
+            if (y > 0)
+            {
+                list.AddRange(new[]
+                {
+                    (((mask << 1) & option[y - 1]) != 0 ? 1 : 0, -1 , y - 1),
+                    ((mask & option[y - 1]) != 0 ? 1 : 0, 0 , y - 1),
+                    (((mask >> 1) & option[y - 1]) != 0 ? 1 : 0, 1 , y - 1)
+                });
+            }
+
+            if (y < option.Length - 1)
+            {
+                list.AddRange(new[] {
+                    (((mask << 1) & option[y + 1]) != 0 ? 1 : 0 , -1, y + 1),
+                    ((mask & option[y + 1]) != 0 ? 1 : 0 , 0 , y + 1),
+                    (((mask >> 1) & option[y + 1]) != 0 ? 1 : 0 , 1 , y + 1)
+                });
+            }
+            
+            list.AddRange(new[]
+            {
+                (((mask << 1) & option[y]) != 0 ? 1 : 0 , -1 , y),
+                (((mask >> 1) & option[y]) != 0 ? 1 : 0 , 1 , y)
+            });
+            
+            List<(int, int)> coords = new List<(int, int)>();
+            
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].Item1 != 0)
+                {
+                    coords.Add((list[i].Item2, list[i].Item3));
+                } 
+            }
+
+            return coords;
         }
 
         public ulong[] AdjacentMask(ulong mask, int y, bool findEmpty = false)
         {
             ulong[] adjacent = new ulong[3];
             ulong[] option;
-
+            
             if (findEmpty) option = EmptyField;
             else option = Field;
             

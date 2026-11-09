@@ -137,7 +137,7 @@ namespace Moonrocks_Sweepin
             
             if (((int[,])Session["cellCounts"])[j, i] == 0)
             {
-                ulong[] empties = map.EmptyMask(j, i);
+                ulong[] empties = map.BorderMask(map.EmptyMask(j, i));
                 
                 bool[,] revEmpties = map.ReverseBitboardize(empties);
                 

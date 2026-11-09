@@ -67,7 +67,6 @@ namespace Moonrocks_Sweepin
                 }
             }
             
-            
             return rev;
         }
 
@@ -94,7 +93,8 @@ namespace Moonrocks_Sweepin
         public ulong[] EmptyMask(int startC, int startR)
         {
             ulong[] empty = new ulong[GameConfig.Height];
-
+            empty[startR] |= MaskOnClick(startC);
+            
             Queue<(int, int)> queue = new Queue<(int, int)>();
             queue.Enqueue((startC, startR));
             
@@ -113,6 +113,34 @@ namespace Moonrocks_Sweepin
             }
             
             return empty;
+        }
+
+        public ulong[] BorderMask(ulong[] mask)
+        {
+            ulong[] bordered = mask.ToArray();
+            
+            for (int i = 0; i < mask.Length; i++)
+            {
+                if (bordered[i] == 0) continue;
+
+                bordered[i] |= mask[i] >> 1;
+                bordered[i] |= mask[i] << 1;
+                if (i > 0)
+                {
+                    bordered[i - 1] |= mask[i];
+                    bordered[i - 1] |= mask[i] << 1;
+                    bordered[i - 1] |= mask[i] >> 1;
+                }
+                if (i < mask.Length - 1)
+                {
+                    bordered[i + 1] |= mask[i];
+                    bordered[i + 1] |= mask[i] << 1;
+                    bordered[i + 1] |= mask[i] >> 1;
+                }
+
+            }
+
+            return bordered;
         }
         
         public List<(int, int)> AdjacentCoords(ulong mask, int y)

@@ -138,11 +138,20 @@ namespace Moonrocks_Sweepin
             if (((int[,])Session["cellCounts"])[j, i] == 0)
             {
                 ulong[] empties = map.EmptyMask(j, i);
-
-                foreach (ulong emptylong in empties)
+                
+                bool[,] revEmpties = map.ReverseBitboardize(empties);
+                
+                for (int y = 0; y < revEmpties.GetLength(1); y++)
+                {
+                    for (int x = 0; x < revEmpties.GetLength(0); x++)
+                    {
+                        if(revEmpties[x, y]) revealed[x, y] = true;
+                    }
+                }
+                /*foreach (ulong emptylong in empties)
                 {
                     Console.WriteLine(Convert.ToString((long)emptylong, 2).PadLeft(GameConfig.Width, '0'));
-                }
+                }*/
             }
 
             /*Console.Clear();

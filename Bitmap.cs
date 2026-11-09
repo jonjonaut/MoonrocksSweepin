@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.EnterpriseServices.Internal;
 using System.Linq;
 
 namespace Moonrocks_Sweepin
@@ -54,6 +55,21 @@ namespace Moonrocks_Sweepin
             return bitboard;
         }
 
+        public bool[,] ReverseBitboardize(ulong[] mask)
+        {
+            bool[,] rev = new bool[GameConfig.Width, GameConfig.Height];
+
+            for (int x = 0; x < rev.GetLength(0); x++)
+            {
+                for (int y = 0; y < rev.GetLength(1); y++)
+                {
+                    rev[x, y] = ((mask[y] >> (rev.GetLength(0) - x - 1)) & 1UL) != 0;
+                }
+            }
+            
+            
+            return rev;
+        }
 
         public void MaskEmpty(int[,] popcount, bool[,] bombs)
         {

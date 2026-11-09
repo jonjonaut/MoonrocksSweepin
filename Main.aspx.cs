@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.UI;
@@ -14,7 +15,8 @@ namespace Moonrocks_Sweepin
 {
     public partial class Main : System.Web.UI.Page
     {        
-        public static bool[,] empty, revealed = new bool[GameConfig.Width, GameConfig.Height];
+        private static bool[,] revealed = new bool[GameConfig.Width, GameConfig.Height];
+        private static int CellsRevealed;
         private static Bitmap map;
         
         protected void Page_Load(object sender, EventArgs e)
@@ -85,7 +87,7 @@ namespace Moonrocks_Sweepin
                     
                     if (revealed[j, i])
                     {
-                        div.Attributes["class"] = "box revealed";
+                        div.Attributes["class"] = "box revealed ";
 
                         int popcount = ((int[,])Session["cellCounts"])[j, i];
 
@@ -98,6 +100,8 @@ namespace Moonrocks_Sweepin
 
                         if (((bool[,])Session["cells"])[j, i]) revealedImg.ImageUrl = "images/rock.png";
 
+                        if (Session["lost"] as (int, int)? == (j, i)) div.Attributes["class"] += "lost";
+                        
                         div.Controls.Add(revealedImg);
                     }
                     else
@@ -107,10 +111,11 @@ namespace Moonrocks_Sweepin
                         Button cell = new Button
                         {
                             ID = $"{j} {i}",
-                            Height = new Unit(24),
-                            Width = new Unit(24),
+                            Height = new Unit(100, UnitType.Percentage),
                             CssClass = "button"
                         };
+                        
+                        if (!(Session["lost"] is null)) cell.Enabled = false;
                         
                         div.Controls.Add(cell);
                     }
@@ -132,10 +137,61 @@ namespace Moonrocks_Sweepin
             string id = cell.ID;
             int j = int.Parse(id.Substring(0, id.IndexOf(' ')));
             int i = int.Parse(id.Substring(id.IndexOf(' ')));
+
+            bool[,] cells = (bool[,])Session["cells"];
+            int[,] cellCounts = (int[,])Session["cellCounts"];
+
+            //Mine on first attempt
             
-            Console.Clear();
+            if (CellsRevealed == 0)
+            {
+                cells[j, i] = false;
+                map.RemoveMine(Bitmap.MaskOnClick(j), i);
+
+                for (int y = 0; y < cells.GetLength(1); y++)
+                {
+                    for (int x = 0; x < cells.GetLength(0); x++)
+                    {
+                        ulong mask = Bitmap.MaskOnClick(x);
+
+                        ulong[] adjacent = map.AdjacentMask(mask, y);
+                        int popcount = Bitmap.PopcountMask(adjacent);
+                        cellCounts[x, y] = popcount;
+                    }
+                }
+                
+                Session["cellCounts"] = cellCounts;
+                
+                CellsRevealed++;
+            }
             
-            if (((int[,])Session["cellCounts"])[j, i] == 0)
+            //On lost
+            
+            if (cells[j, i])
+            {
+                for (int y = 0; y < cells.GetLength(1); y++)
+                {
+                    for (int x = 0; x < cells.GetLength(0); x++)
+                    {
+                        if (cells[x, y]) revealed[x, y] = true;
+                    }
+                }
+                
+                Session["lost"] = (j, i);
+                return;
+            }
+            
+            //On win
+            
+            if (CellsRevealed + Bitmap.PopcountMask(map.Field) == cells.Length)
+            {
+                Session["won"] = true;
+            }
+            Console.WriteLine($"{CellsRevealed} {Bitmap.PopcountMask(map.Field)} {cells.Length}");
+            
+            //On Empty
+            
+            if (cellCounts[j, i] == 0)
             {
                 ulong[] empties = map.BorderMask(map.EmptyMask(j, i));
                 
@@ -145,27 +201,20 @@ namespace Moonrocks_Sweepin
                 {
                     for (int x = 0; x < revEmpties.GetLength(0); x++)
                     {
-                        if(revEmpties[x, y]) revealed[x, y] = true;
+                        if(revEmpties[x, y])
+                        {
+                            if (!revealed[x, y]) CellsRevealed++;
+                            revealed[x, y] = true;
+                        }
                     }
                 }
-                /*foreach (ulong emptylong in empties)
-                {
-                    Console.WriteLine(Convert.ToString((long)emptylong, 2).PadLeft(GameConfig.Width, '0'));
-                }*/
+
+                return;
             }
-
-            /*Console.Clear();
-
-            foreach (var tup in map.AdjacentCoords(Bitmap.MaskOnClick(j), i)) {
-                Console.WriteLine($"x={tup.Item1}, y={tup.Item2}");
-            }*/
             
-            /*foreach (ulong emptylong in empties)
-            {
-                Console.WriteLine(Convert.ToString((long)emptylong, 2).PadLeft(64, '0'));
-            }*/
-            
+            CellsRevealed++;
             revealed[j, i] = true;
+
         }
 
     }

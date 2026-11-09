@@ -1,16 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
 .form {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: safe center;
     height: 100vh;
 }
 
 .panel {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: safe center;
     width: 100vw;
     margin-bottom: 10%;
+    max-height: 100vh;
+}
+
+.lost {
+    background-image: none !important;
+    background-color: red !important;
 }
 
 .box {
@@ -52,7 +65,6 @@
 .button {
     background-color: transparent;
     border: none;
-    cursor: pointer;
     height: 100%;
     width: 100%;
 }

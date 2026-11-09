@@ -8,9 +8,9 @@ namespace Moonrocks_Sweepin
 {
     public class Bitmap
     {
-        public ulong[] EmptyField { get; set; } 
+        private ulong[] EmptyField { get; set; } 
         
-        private ulong[] Field { get; }
+        public ulong[] Field { get; }
 
         public Bitmap(bool[,] cells) => Field = Bitboardize(cells);
 
@@ -30,6 +30,8 @@ namespace Moonrocks_Sweepin
 
             return count;
         }
+        
+        public void RemoveMine(ulong mask, int y) => Field[y] &= ~mask; 
         
         public ulong[] Bitboardize(bool[,] cells)
         {

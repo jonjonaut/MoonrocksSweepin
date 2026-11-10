@@ -8,17 +8,18 @@ namespace Moonrocks_Sweepin
 {
     public class MineHandler
     {
-        private const int Seed = 6;
-
         public bool[,] Cells;
 
-        public bool[,] Init()
+        public bool[,] Init(int? seed = null)
         {
             Cells = new bool[GameConfig.Width, GameConfig.Height];
 
             int threshold = (int)Math.Floor((double)(GameConfig.Width * GameConfig.Height) / 5);
-            Random rand = new Random(Seed);
-
+            Random rand;
+            
+            if (seed is null) rand = new Random();
+            else rand = new Random(seed.Value);
+            
             List<(int x, int y)> minesLocation = new List<(int x, int y)>();
             
             int count = 0;

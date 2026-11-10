@@ -15,18 +15,20 @@ namespace Moonrocks_Sweepin
 {
     public partial class Main : System.Web.UI.Page
     {        
-        private static bool[,] revealed = new bool[GameConfig.Width, GameConfig.Height];
+        private static bool[,] revealed;
         private static int CellsRevealed;
         private static Bitmap map;
         private static bool isFlag;
-        private static List<(int, int)> flags = new List<(int, int)>(); 
+        private static List<(int, int)> flags = new List<(int, int)>();
+        private static int? seed;
          
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                revealed = new bool[GameConfig.Width, GameConfig.Height];
                 MineHandler mines = new MineHandler();
-                Session["cells"] = mines.Init();
+                Session["cells"] = mines.Init(seed);
                 map = new Bitmap((bool[,])Session["cells"]);
             }
 
@@ -81,7 +83,11 @@ namespace Moonrocks_Sweepin
         {
             Panel.Controls.Clear();
 
-            if (!(Session["win"] is null)) restart.ImageUrl = "images/won.png";
+            if (!(Session["win"] is null))
+            {
+                restart.ImageUrl = "images/won.png";
+                Return.Visible = true;
+            }
             
             for (int i = 0; i < GameConfig.Height; i++)
             {
@@ -119,7 +125,11 @@ namespace Moonrocks_Sweepin
                             CssClass = "button",
                         };
                         
-                        if (!(Session["lost"] is null)) cell.Enabled = false;
+                        if (!(Session["lost"] is null))
+                        {
+                            cell.Enabled = false;
+                            Return.Visible = true;
+                        }
 
                         if (flags.Contains((j, i)))
                         {
@@ -139,6 +149,32 @@ namespace Moonrocks_Sweepin
             
             //Session["controls"] = cells;
             
+        }
+        
+        protected void Restart(object sender, ImageClickEventArgs args)
+        {
+            //reset everything hmmm
+            CellsRevealed = 0;
+            isFlag = false;
+            flags = new List<(int, int)>(); 
+            seed = string.IsNullOrEmpty(Seed.Text) ? (int?)null : int.Parse(Seed.Text);
+            Session["lost"] = null;
+            Session["win"] = null;
+            
+            Response.Redirect("Main.aspx");
+        }
+
+        protected void ReturnToMenu(object sender, EventArgs e)
+        {
+            //reset everything hmmm
+            CellsRevealed = 0;
+            isFlag = false;
+            flags = new List<(int, int)>(); 
+            seed = string.IsNullOrEmpty(Seed.Text) ? (int?)null : int.Parse(Seed.Text);
+            Session["lost"] = null;
+            Session["win"] = null;
+            
+            Response.Redirect("Menu.aspx");
         }
         
         private void ClickDelegate(object sender, ImageClickEventArgs args)

@@ -48,12 +48,6 @@ namespace Moonrocks_Sweepin
                 }
             }
             
-            //debug
-            /*foreach (long i in bitboard)
-            {
-                Console.WriteLine(Convert.ToString(i, 2).PadLeft(cells.GetLength(0), '0'));
-            }*/
-            
             return bitboard;
         }
 

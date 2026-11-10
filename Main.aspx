@@ -16,10 +16,13 @@
         <div class="labediv">
             <asp:Label ID="flagMode" CssClass="flaglabe" Text="Flag Mode" Visible="False" runat="server"></asp:Label>
         </div>
+        <div class="return">
+            <asp:Button ID="Return" runat="server" Text="Return to Menu" CssClass="returnBtn" Visible="False" OnClick="ReturnToMenu"/>
+        </div>
         <div class="upper">
             <div class="restartClicked">
                 <div class="restart">
-                    <asp:ImageButton ID="restart" ImageUrl="images/restart.png" CssClass="restartBtn" runat="server"></asp:ImageButton>
+                    <asp:ImageButton ID="restart" ImageUrl="images/restart.png" CssClass="restartBtn" runat="server" OnClick="Restart"></asp:ImageButton>
                 </div>
             </div>
             <div class="moonrocks">

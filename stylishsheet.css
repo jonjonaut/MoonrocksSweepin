@@ -31,7 +31,6 @@ body {
     color: #23262f;
 }
 
-
 .text {
     color: #ff7dc2;
     font-family: 'Fredoka Light', sans-serif;
@@ -66,6 +65,23 @@ body {
     flex-direction: column; 
     width: 100%;
     margin: auto;
+}
+
+.return {
+    position: absolute;
+    z-index: 1;
+    cursor: default;
+    display: flex;
+    width: 100%;
+    justify-content: right;
+}
+
+.returnBtn {
+    border: none;
+    background: none;
+    font-family: 'Fredoka Medium', sans-serif;
+    font-size: 54px;
+    color: #23262f;
 }
 
 .restartClicked {

@@ -9,8 +9,23 @@
 </head>
 <body>
     <form id="form1" class="form" runat="server">
-        <div>
-            <asp:Panel ID="Panel" runat="server" CssClass="panel"></asp:Panel>
+        <details class="details">
+            <summary class="settings">Settings</summary>
+            <p class="text">Seed:</p> <asp:TextBox ID="Seed" runat="server"></asp:TextBox>
+        </details>
+        <div class="labediv">
+            <asp:Label ID="flagMode" CssClass="flaglabe" Text="Flag Mode" Visible="False" runat="server"></asp:Label>
+        </div>
+        <div class="upper">
+            <div class="restartClicked">
+                <div class="restart">
+                    <asp:ImageButton ID="restart" ImageUrl="images/restart.png" CssClass="restartBtn" runat="server"></asp:ImageButton>
+                </div>
+            </div>
+            <div class="moonrocks">
+                <asp:Panel ID="Panel" runat="server" CssClass="panel"></asp:Panel>
+                <asp:CheckBox ID="flagState" CssClass="flag" AccessKey="F" AutoPostBack="True" runat="server" OnCheckedChanged="ToggleFlag"/>
+            </div>
         </div>
     </form>
 </body>

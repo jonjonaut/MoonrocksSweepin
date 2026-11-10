@@ -77,7 +77,11 @@
     <Content Include="images\7.png" />
     <Content Include="images\8.png" />
     <Content Include="images\closed.svg" />
+    <Content Include="images\flag.svg" />
+    <Content Include="images\restart.png" />
+    <Content Include="images\revealed.svg" />
     <Content Include="images\rock.png" />
+    <Content Include="images\won.png" />
     <Content Include="Main.aspx" />
     <Content Include="Menu.aspx" />
     <Content Include="stylishsheet.css" />

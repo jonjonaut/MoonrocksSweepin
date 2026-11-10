@@ -5,10 +5,45 @@ body {
     overflow-x: hidden;
 }
 
+@font-face {
+    font-family: 'Fredoka Medium';
+    src: url('Fonts/Fredoka-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Fredoka Light';
+    src: url('Fonts/Fredoka-Light.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.details {
+    position: absolute;
+    z-index: 1;
+    cursor: default;
+}
+
+.settings {
+    font-family: 'Fredoka Medium', sans-serif;
+    font-size: 54px;
+    color: #23262f;
+}
+
+
+.text {
+    color: #ff7dc2;
+    font-family: 'Fredoka Light', sans-serif;
+    font-size: 32px
+}
+
+.moonrocks {
+}
+
 .form {
     display: flex;
-    flex-direction: row;
-    align-items: safe center;
+    position: relative;
     height: 100vh;
 }
 
@@ -17,13 +52,47 @@ body {
     flex-wrap: wrap;
     justify-content: safe center;
     width: 100vw;
-    margin-bottom: 10%;
+    /*margin-bottom: 10%;*/
     max-height: 100vh;
 }
 
 .lost {
     background-image: none !important;
     background-color: red !important;
+}
+
+.upper {
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+    margin: auto;
+}
+
+.restartClicked {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 5px;
+}
+
+.restart {
+    position: relative;
+    display: flex;
+    --size: 62px;
+    height: var(--size);
+    width: var(--size);
+    justify-content: center;
+    background-size: 100%;
+    border: solid 1px black;
+    background-image: url("images/closed.svg");
+}
+
+.restartBtn {
+    position: absolute;
+    height: 71%;
+    justify-self: center;
+    align-self: center;
+    image-rendering: pixelated;
 }
 
 .box {
@@ -36,6 +105,25 @@ body {
     align-items: center;
     border: solid 1px black;
     background-image: url("images/closed.svg");
+}
+
+.flag {
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.flaglabe {
+    display: flex;
+    font-size: 48px;
+}
+
+.labediv {
+    display: flex;
+    position: absolute;
+    padding-top: 5%;
+    width: 100%;
+    justify-content: center;
 }
 
 .revealed {
@@ -63,10 +151,17 @@ body {
 }
 
 .button {
-    background-color: transparent;
+    background-color: transparent !important;
     border: none;
+    color: transparent !important;
+    cursor: default !important; 
     height: 100%;
     width: 100%;
+}
+
+.flagImage {
+    height: 100%;
+    cursor: default !important;
 }
 
 .fakebr {

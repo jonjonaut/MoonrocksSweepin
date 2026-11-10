@@ -18,7 +18,9 @@ namespace Moonrocks_Sweepin
         private static bool[,] revealed = new bool[GameConfig.Width, GameConfig.Height];
         private static int CellsRevealed;
         private static Bitmap map;
-        
+        private static bool isFlag;
+        private static List<(int, int)> flags = new List<(int, int)>(); 
+         
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -39,7 +41,7 @@ namespace Moonrocks_Sweepin
                     
                     div.Attributes["class"] = "box";
 
-                    Button cell = new Button
+                    ImageButton cell = new ImageButton
                     {
                         //ImageUrl = "images/1.png",
                         ID = $"{j} {i}",
@@ -78,6 +80,8 @@ namespace Moonrocks_Sweepin
         protected void Page_PreRender(object sender, EventArgs e)
         {
             Panel.Controls.Clear();
+
+            if (!(Session["win"] is null)) restart.ImageUrl = "images/won.png";
             
             for (int i = 0; i < GameConfig.Height; i++)
             {
@@ -108,14 +112,20 @@ namespace Moonrocks_Sweepin
                     {
                         div.Attributes["class"] = "box";
                         
-                        Button cell = new Button
+                        ImageButton cell = new ImageButton
                         {
                             ID = $"{j} {i}",
                             Height = new Unit(100, UnitType.Percentage),
-                            CssClass = "button"
+                            CssClass = "button",
                         };
                         
                         if (!(Session["lost"] is null)) cell.Enabled = false;
+
+                        if (flags.Contains((j, i)))
+                        {
+                            cell.CssClass = "flagImage";
+                            cell.ImageUrl = "images/flag.svg";
+                        }
                         
                         div.Controls.Add(cell);
                     }
@@ -131,16 +141,31 @@ namespace Moonrocks_Sweepin
             
         }
         
-        private void ClickDelegate(object sender, EventArgs args)
+        private void ClickDelegate(object sender, ImageClickEventArgs args)
         {
-            Button cell = (Button)sender;
+            ImageButton cell = (ImageButton)sender;
             string id = cell.ID;
             int j = int.Parse(id.Substring(0, id.IndexOf(' ')));
             int i = int.Parse(id.Substring(id.IndexOf(' ')));
 
             bool[,] cells = (bool[,])Session["cells"];
             int[,] cellCounts = (int[,])Session["cellCounts"];
+            
+            //On flag mode/flag
+            
+            if (isFlag)
+            {
+                if (!flags.Contains((j, i)))
+                {
+                    flags.Add((j, i));
+                    return;
+                }
+                flags.Remove((j, i));
+                return;
+            }
 
+            if (flags.Contains((j, i))) return;
+            
             //Mine on first attempt
             
             if (CellsRevealed == 0)
@@ -185,7 +210,15 @@ namespace Moonrocks_Sweepin
             
             if (CellsRevealed + Bitmap.PopcountMask(map.Field) == cells.Length)
             {
-                Session["won"] = true;
+                for (int y = 0; y < cells.GetLength(1); y++)
+                {
+                    for (int x = 0; x < cells.GetLength(0); x++)
+                    {
+                        if (cells[x, y]) flags.Add((x, y));
+                    }
+                }
+
+                Session["win"] = true;
             }
             Console.WriteLine($"{CellsRevealed} {Bitmap.PopcountMask(map.Field)} {cells.Length}");
             
@@ -217,5 +250,10 @@ namespace Moonrocks_Sweepin
 
         }
 
+        protected void ToggleFlag(object sender, EventArgs e)
+        {
+            isFlag = !isFlag;
+            flagMode.Visible = isFlag;
+        }
     }
 }

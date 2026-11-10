@@ -117,7 +117,7 @@ namespace Moonrocks_Sweepin
             
             for (int i = 0; i < mask.Length; i++)
             {
-                if (bordered[i] == 0) continue;
+                if (mask[i] == 0) continue;
 
                 bordered[i] |= mask[i] >> 1;
                 bordered[i] |= mask[i] << 1;

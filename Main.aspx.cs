@@ -20,7 +20,6 @@ namespace Moonrocks_Sweepin
         private static Bitmap map;
         private static bool isFlag;
         private static List<(int, int)> flags = new List<(int, int)>();
-        private static int? seed;
          
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,7 +27,7 @@ namespace Moonrocks_Sweepin
             {
                 revealed = new bool[GameConfig.Width, GameConfig.Height];
                 MineHandler mines = new MineHandler();
-                Session["cells"] = mines.Init(seed);
+                Session["cells"] = mines.Init(GameConfig.Seed);
                 map = new Bitmap((bool[,])Session["cells"]);
             }
 
@@ -157,7 +156,7 @@ namespace Moonrocks_Sweepin
             CellsRevealed = 0;
             isFlag = false;
             flags = new List<(int, int)>(); 
-            seed = string.IsNullOrEmpty(Seed.Text) ? (int?)null : int.Parse(Seed.Text);
+            GameConfig.Seed = string.IsNullOrEmpty(Seed.Text) ? (int?)null : int.Parse(Seed.Text);
             Session["lost"] = null;
             Session["win"] = null;
             
@@ -170,7 +169,7 @@ namespace Moonrocks_Sweepin
             CellsRevealed = 0;
             isFlag = false;
             flags = new List<(int, int)>(); 
-            seed = string.IsNullOrEmpty(Seed.Text) ? (int?)null : int.Parse(Seed.Text);
+            GameConfig.Seed = string.IsNullOrEmpty(Seed.Text) ? (int?)null : int.Parse(Seed.Text);
             Session["lost"] = null;
             Session["win"] = null;
             

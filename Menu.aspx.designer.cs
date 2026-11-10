@@ -24,6 +24,33 @@ namespace Moonrocks_Sweepin
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// Seed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Seed;
+
+        /// <summary>
+        /// debugCheckbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox debugCheckbox;
+
+        /// <summary>
+        /// debugDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl debugDiv;
+
+        /// <summary>
         /// Height control.
         /// </summary>
         /// <remarks>
@@ -42,12 +69,12 @@ namespace Moonrocks_Sweepin
         protected global::System.Web.UI.WebControls.TextBox Width;
 
         /// <summary>
-        /// submit control.
+        /// Btn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button submit;
+        protected global::System.Web.UI.WebControls.Button Btn;
     }
 }

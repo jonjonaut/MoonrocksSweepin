@@ -68,6 +68,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Fonts\Fredoka-Light.ttf" />
+    <Content Include="Fonts\Fredoka-Medium.ttf" />
+    <Content Include="Fonts\m6x11.ttf" />
     <Content Include="images\1.png" />
     <Content Include="images\2.png" />
     <Content Include="images\3.png" />

@@ -6,6 +6,13 @@ body {
 }
 
 @font-face {
+    font-family: 'm6x11';
+    src: url('Fonts/m6x11.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'Fredoka Medium';
     src: url('Fonts/Fredoka-Medium.ttf') format('truetype');
     font-weight: normal;
@@ -51,7 +58,7 @@ body {
     flex-wrap: wrap;
     justify-content: safe center;
     width: 100vw;
-    /*margin-bottom: 10%;*/
+    margin-bottom: 10%;
     max-height: 100vh;
 }
 
@@ -64,7 +71,7 @@ body {
     display: flex;
     flex-direction: column; 
     width: 100%;
-    margin: auto;
+    margin: 5% auto auto;
 }
 
 .return {
@@ -72,8 +79,7 @@ body {
     z-index: 1;
     cursor: default;
     display: flex;
-    width: 100%;
-    justify-content: right;
+    right: 0;
 }
 
 .returnBtn {
@@ -131,13 +137,13 @@ body {
 
 .flaglabe {
     display: flex;
-    font-size: 48px;
+    font-family: 'Fredoka Medium', sans-serif;
+    font-size: 64px;
 }
 
 .labediv {
     display: flex;
     position: absolute;
-    padding-top: 5%;
     width: 100%;
     justify-content: center;
 }
@@ -164,6 +170,43 @@ body {
     display: flex;
     height: calc(var(--size) * 0.8);
     image-rendering: pixelated;
+}
+
+.seedBox {
+    margin-bottom: 10px;
+}
+
+.debug {
+    display: flex;
+    justify-content: center;
+}
+
+.debugDiv {
+    display: inline !important;
+}
+
+.debugCheckbox {
+    position: relative;
+    top: -3px;
+}
+
+.debugCheckbox input[type="checkbox"] {
+    transform: scale(1.5);
+}
+
+.difficulty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+
+}
+
+.difficultyBtn {
+    font-family: 'm6x11', sans-serif;
+    font-size: 96px;
+    background: none;
+    border: none;
 }
 
 .button {

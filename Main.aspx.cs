@@ -270,7 +270,6 @@ namespace Moonrocks_Sweepin
                 GameConfig.Wins++;
                 Session["win"] = true;
             }
-            Console.WriteLine($"{CellsRevealed} {Bitmap.PopcountMask(map.Field)} {cells.Length}");
             
             //On Empty
             

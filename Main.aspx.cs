@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Permissions;
 using System.Web;
+using System.Web.Instrumentation;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -25,6 +26,8 @@ namespace Moonrocks_Sweepin
         {
             if (!IsPostBack)
             {
+                Session["tutorial"] = false;
+                pagin.Style["zoom"] = Session["zoom"].ToString();
                 revealed = new bool[GameConfig.Width, GameConfig.Height];
                 MineHandler mines = new MineHandler();
                 Session["cells"] = mines.Init(GameConfig.Seed);
@@ -68,7 +71,6 @@ namespace Moonrocks_Sweepin
 
                 }
                 
-                Panel.Controls.Add(new LiteralControl("<div class=\"fakebr\"> </div>"));
             }
 
             if (!IsPostBack) {
@@ -90,6 +92,10 @@ namespace Moonrocks_Sweepin
             
             for (int i = 0; i < GameConfig.Height; i++)
             {
+                HtmlGenericControl cellRow = new HtmlGenericControl("div");
+                
+                cellRow.Attributes["class"] = "row";
+                
                 for (int j = 0; j < GameConfig.Width; j++)
                 {
                     HtmlGenericControl div = new HtmlGenericControl("div");
@@ -139,11 +145,11 @@ namespace Moonrocks_Sweepin
                         div.Controls.Add(cell);
                     }
                     
-                    Panel.Controls.Add(div);
+                    cellRow.Controls.Add(div);
 
                 }
                 
-                Panel.Controls.Add(new LiteralControl("<div class=\"fakebr\"> </div>"));
+                Panel.Controls.Add(cellRow);
             }
             
             //Session["controls"] = cells;
@@ -238,7 +244,8 @@ namespace Moonrocks_Sweepin
                         if (cells[x, y]) revealed[x, y] = true;
                     }
                 }
-                
+
+                GameConfig.Losses++;
                 Session["lost"] = (j, i);
                 return;
             }
@@ -255,6 +262,7 @@ namespace Moonrocks_Sweepin
                     }
                 }
 
+                GameConfig.Wins++;
                 Session["win"] = true;
             }
             Console.WriteLine($"{CellsRevealed} {Bitmap.PopcountMask(map.Field)} {cells.Length}");

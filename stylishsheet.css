@@ -2,7 +2,6 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden;
 }
 
 @font-face {
@@ -29,7 +28,56 @@ body {
 .details {
     position: absolute;
     z-index: 1;
-    cursor: default;
+    cursor: pointer;
+}
+
+.stats {
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
+    margin-right: 5%;
+    right: 0;
+}
+
+.ohno {
+    line-height: 0.7 !important;
+}
+
+.p {
+    font-family: 'm6x11', sans-serif;
+    font-size: 48px;
+}
+
+.flagmode {
+    background: linear-gradient(to right, #d82f2f, #e38c31, #dfea3b, #7fe22f, #2ae493, #33e5da, #2a8adf, #3030e4, #862de9, #d82f2f) 0 50%;
+    background-clip: text;
+    color: transparent;
+    animation: text 6s linear infinite;
+    background-size: 200% 100%;
+}
+
+@keyframes text {
+    0% {
+        background-position: 0 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+.ohno:hover {
+    animation: jitter 0.2s steps(1) infinite;
+}
+
+@keyframes jitter {
+    0% { transform: translate(-5px, 0); }
+    50% { transform: translate(5px, 0); }
+}
+
+.row {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
 }
 
 .settings {
@@ -38,13 +86,30 @@ body {
     color: #23262f;
 }
 
-.text {
+.statsSum {
+    font-family: 'm6x11', sans-serif;
+    font-size: 80px;
+    color: #23262f;
+    list-style: none;
+}
+
+.statsText {
+    cursor: default;
     color: #ff7dc2;
-    font-family: 'Fredoka Light', sans-serif;
+    font-family: 'm6x11', sans-serif;
+    font-size: 48px
+}
+
+.text {
+    cursor: default;
+    color: #ff7dc2;
+    font-family: 'Fredoka Medium', sans-serif;
     font-size: 32px
 }
 
 .moonrocks {
+    display: flex;
+    justify-content: safe center;
 }
 
 .form {
@@ -55,11 +120,11 @@ body {
 
 .panel {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: safe center;
-    width: 100vw;
+    flex-wrap: nowrap;
     margin-bottom: 10%;
-    max-height: 100vh;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: flex-start;
 }
 
 .lost {
@@ -70,7 +135,8 @@ body {
 .upper {
     display: flex;
     flex-direction: column; 
-    width: 100%;
+    width: fit-content;
+    position: relative;
     margin: 5% auto auto;
 }
 
@@ -93,7 +159,6 @@ body {
 .restartClicked {
     display: flex;
     justify-content: center;
-    width: 100%;
     padding: 5px;
 }
 
@@ -107,6 +172,7 @@ body {
     background-size: 100%;
     border: solid 1px black;
     background-image: url("images/closed.svg");
+    z-index: 1;
 }
 
 .restartBtn {

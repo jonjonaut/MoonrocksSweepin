@@ -7,7 +7,7 @@
     <title></title>
     <link rel="stylesheet" href="stylishsheet.css" />
 </head>
-<body>
+<body id="pagin" runat="server">
     <form id="form1" class="form" runat="server">
         <details class="details">
             <summary class="settings">Settings</summary>

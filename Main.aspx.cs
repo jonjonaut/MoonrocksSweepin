@@ -21,11 +21,16 @@ namespace Moonrocks_Sweepin
         private static Bitmap map;
         private static bool isFlag;
         private static List<(int, int)> flags = new List<(int, int)>();
-         
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                if (GameConfig.BgColorLookup.TryGetValue(GameConfig.Wins, out string bgColor))
+                {
+                    pagin.Style["background-color"] = bgColor;
+                }
+                
                 Session["tutorial"] = false;
                 pagin.Style["zoom"] = Session["zoom"].ToString();
                 revealed = new bool[GameConfig.Width, GameConfig.Height];
@@ -252,7 +257,7 @@ namespace Moonrocks_Sweepin
             
             //On win
             
-            if (CellsRevealed + Bitmap.PopcountMask(map.Field) == cells.Length)
+            if (CellsRevealed + Bitmap.PopcountMask(map.Field) == cells.Length - 1)
             {
                 for (int y = 0; y < cells.GetLength(1); y++)
                 {

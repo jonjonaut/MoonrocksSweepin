@@ -103,5 +103,8 @@ namespace Moonrocks_Sweepin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tutorial;
+        
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl menuin;
+
     }
 }

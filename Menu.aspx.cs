@@ -13,6 +13,11 @@ namespace Moonrocks_Sweepin
         {
             if (!Page.IsPostBack)
             {
+                if (GameConfig.BgColorLookup.TryGetValue(GameConfig.Wins, out string bgColor))
+                {
+                    menuin.Style["background-color"] = bgColor;
+                }
+                
                 winCount.Text += $"{GameConfig.Wins}";
                 loseCount.Text += $"{GameConfig.Losses}";
             }
@@ -58,5 +63,17 @@ namespace Moonrocks_Sweepin
         public static int? Seed { get; set; }
         public static int Wins = 0;
         public static int Losses = 0;
+        
+        public static Dictionary<int, string> BgColorLookup = new Dictionary<int, string>
+        {
+            { 1, "#224dda" },
+            { 2, "#077a12" },
+            { 3, "#ff2200"},
+            { 4, "#2000af" },
+            { 5, "#790000" },
+            { 6, "#005e79" },
+            { 7, "#ffffff"},
+            { 8, "#484848" },
+        };
     }
 }

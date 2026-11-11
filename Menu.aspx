@@ -7,7 +7,7 @@
     <title>Moonrocks</title>
     <link rel="stylesheet" href="stylishsheet.css" />
 </head>
-<body>
+<body id="menuin" runat="server">
     <form id="form1" runat="server">
         <details class="stats">
             <summary class="statsSum">Stats</summary>

@@ -72,7 +72,7 @@ namespace Moonrocks_Sweepin
             }
 
             if (!IsPostBack) {
-                Session["cellCounts"] = cellCounts;
+                Session["cellCounts"] = cellCounts.Clone();
                 map.MaskEmpty((int[,])Session["cellCounts"], (bool[,])Session["cells"]);
             }
             
@@ -203,11 +203,12 @@ namespace Moonrocks_Sweepin
             
             //Mine on first attempt
             
-            if (CellsRevealed == 0)
+            if (CellsRevealed == 0 && cells[j, i])
             {
                 cells[j, i] = false;
                 map.RemoveMine(Bitmap.MaskOnClick(j), i);
-
+                ((bool[,])Session["cells"])[j, i] = false;
+                
                 for (int y = 0; y < cells.GetLength(1); y++)
                 {
                     for (int x = 0; x < cells.GetLength(0); x++)
@@ -220,8 +221,9 @@ namespace Moonrocks_Sweepin
                     }
                 }
                 
-                Session["cellCounts"] = cellCounts;
-                
+                Session["cellCounts"] = cellCounts.Clone();
+                map.MaskEmpty((int[,])Session["cellCounts"], (bool[,])Session["cells"]);
+
                 CellsRevealed++;
             }
             

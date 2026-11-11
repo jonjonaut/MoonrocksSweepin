@@ -70,9 +70,9 @@ namespace Moonrocks_Sweepin
         {
             ulong[] mask = new ulong[popcount.GetLength(1)];
 
-            for (int x = 0; x < popcount.GetLength(0); x++)
+            for (int y = 0; y < popcount.GetLength(1); y++)
             {
-                for (int y = 0; y < popcount.GetLength(1); y++)
+                for (int x = 0; x < popcount.GetLength(0); x++)
                 {
                     if (popcount[x, y] == 0 && !bombs[x, y])
                     {
@@ -81,7 +81,7 @@ namespace Moonrocks_Sweepin
                 }
             }
             
-            EmptyField = mask;
+            EmptyField = mask.ToArray();
         }
         
         public static ulong MaskOnClick(int x) => 1UL << (GameConfig.Width - x - 1);
@@ -187,10 +187,7 @@ namespace Moonrocks_Sweepin
         public ulong[] AdjacentMask(ulong mask, int y, bool findEmpty = false)
         {
             ulong[] adjacent = new ulong[3];
-            ulong[] option;
-            
-            if (findEmpty) option = EmptyField;
-            else option = Field;
+            ulong[] option = findEmpty ? EmptyField.ToArray() : Field.ToArray();
             
             //top
             if (y > 0)

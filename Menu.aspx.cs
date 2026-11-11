@@ -15,6 +15,7 @@ namespace Moonrocks_Sweepin
             if (Request.Form["difficulty"] is string difficulty)
             {
                 GameConfig.Width = GameConfig.Height = int.Parse(difficulty);
+                GameConfig.Seed = string.IsNullOrEmpty(Seed.Text) ? (int?)null : int.Parse(Seed.Text);
                 Response.Redirect("Main.aspx");
             }
         }

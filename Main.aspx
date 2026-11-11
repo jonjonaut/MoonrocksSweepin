@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Main.aspx.cs" Inherits="Moonrocks_Sweepin.Main" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Main.aspx.cs" MaintainScrollPositionOnPostBack="true" Inherits="Moonrocks_Sweepin.Main" %>
 
 <!DOCTYPE html>
 

@@ -234,8 +234,6 @@ namespace Moonrocks_Sweepin
                 
                 Session["cellCounts"] = cellCounts.Clone();
                 map.MaskEmpty((int[,])Session["cellCounts"], (bool[,])Session["cells"]);
-
-                CellsRevealed++;
             }
             
             //On lost
